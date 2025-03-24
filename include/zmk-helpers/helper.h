@@ -195,12 +195,19 @@
 #define UC_MACRO_ALL(name, unicode_bindings) \
     / { \
         macros { \
-            name: name { \
+            wm_##name: name { \
                 compatible = "zmk,behavior-macro"; \
                 wait-ms = <0>; \
                 tap-ms = <0>; \
                 #binding-cells = <0>; \
-                bindings = <OS_UNICODE_LEAD>, <&macro_tap unicode_bindings>, <OS_UNICODE_TRAIL>; \
+                bindings = <WINMAC_UNICODE_LEAD>, <&macro_tap unicode_bindings>, <OS_UNICODE_TRAIL>; \
+            }; \
+           lin_##name: name { \
+                compatible = "zmk,behavior-macro"; \
+                wait-ms = <0>; \
+                tap-ms = <0>; \
+                #binding-cells = <0>; \
+                bindings = <LINUX_UNICODE_LEAD>, <&macro_tap unicode_bindings>, <OS_UNICODE_TRAIL>; \
             }; \
         }; \
     };
