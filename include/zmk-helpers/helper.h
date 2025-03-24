@@ -156,13 +156,17 @@
 
 /* ZMK_UNICODE */
 
+#define WINMAC_UNICODE_LEAD &macro_press &kp LALT    // macOS/Windows-Alt-Codes
+#define LINUX_UNICODE_LEAD &macro_tap &kp LS(LC(U)) // Linux
+#define WINCOMP_UNICODE_LEAD &macro_tap &kp RALT &kp U // Windows + WinCompose (default)
+
 #if !defined OS_UNICODE_LEAD
     #if HOST_OS == 2
-        #define OS_UNICODE_LEAD &macro_press &kp LALT      // macOS/Windows-Alt-Codes
+        #define OS_UNICODE_LEAD WINMAC_UNICODE_LEAD
     #elif HOST_OS == 1
-        #define OS_UNICODE_LEAD &macro_tap &kp LS(LC(U))   // Linux
+        #define OS_UNICODE_LEAD LINUX_UNICODE_LEAD
     #else
-        #define OS_UNICODE_LEAD &macro_tap &kp RALT &kp U  // Windows + WinCompose (default)
+        #define OS_UNICODE_LEAD WINCOMP_UNICODE_LEAD
     #endif
 #endif
 #if !defined OS_UNICODE_TRAIL
@@ -187,6 +191,20 @@
             }; \
         }; \
     };
+
+#define UC_MACRO_ALL(name, unicode_bindings) \
+    / { \
+        macros { \
+            name: name { \
+                compatible = "zmk,behavior-macro"; \
+                wait-ms = <0>; \
+                tap-ms = <0>; \
+                #binding-cells = <0>; \
+                bindings = <OS_UNICODE_LEAD>, <&macro_tap unicode_bindings>, <OS_UNICODE_TRAIL>; \
+            }; \
+        }; \
+    };
+
 
 #define UC_MODMORPH(name, uc_binding, shifted_uc_binding) \
     / { \
