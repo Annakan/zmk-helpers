@@ -236,8 +236,8 @@
 
 #define ZMK_UNICODE_SINGLE_AOS(name, L0, L1, L2, L3) \
     UC_MACRO_AOS(name ## _lower, &kp L0 &kp L1 &kp L2 &kp L3) \
-    UC_MODMORPH(wm_ ## name, wm_ ## &name ## _lower, &none) \
-    UC_MODMORPH(lin_ ## name, lin_ ## &name ## _lower, &none)
+    UC_MODMORPH(wm_ ## name, &wm_ ## name ## _lower, &none) \
+    UC_MODMORPH(lin_ ## name, &lin_ ## name ## _lower, &none)
 
 
 #define ZMK_UNICODE_PAIR(name, L0, L1, L2, L3, U0, U1, U2, U3) \
@@ -250,7 +250,7 @@
     UC_MACRO_AOS(name ## _lower, &kp L0 &kp L1 &kp L2 &kp L3) \
     UC_MACRO_AOS(name ## _upper, &kp U0 &kp U1 &kp U2 &kp U3) \
     UC_MODMORPH(wn_ ## name, &wm_ ## name ## _lower, &wm_ ## name ## _upper)   \
-    UC_MODMORPH(wn_ ## name, &wn_ ## name ## _lower, &wn_ ## name ## _upper)   \
+    UC_MODMORPH(wm_ ## name, &wm_ ## name ## _lower, &wm_ ## name ## _upper)   \
     UC_MODMORPH(lin_ ## name, &lin_ ## name ## _lower, &lin_ ## name ## _upper)   \
     UC_MODMORPH(lin_ ## name, &lin_ ## name ## _lower, &lin_ ## name ## _upper)   \
 
