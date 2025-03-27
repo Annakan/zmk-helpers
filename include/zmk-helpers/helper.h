@@ -160,6 +160,11 @@
 #define LINUX_UNICODE_LEAD &macro_tap &kp LS(LC(U)) // Linux
 #define WINCOMP_UNICODE_LEAD &macro_tap &kp RALT &kp U // Windows + WinCompose (default)
 
+#define WINMAC_UNICODE_TRAIL &macro_release &kp LALT // macOS/Windows-Alt-Codes
+#define LINUX_UNICODE_TRAIL  &macro_tap &kp SPACE // Linux
+#define WINCOMP_UNICODE_TRAIL &macro_tap &kp RET
+
+
 #if !defined OS_UNICODE_LEAD
     #if HOST_OS == 2
         #define OS_UNICODE_LEAD WINMAC_UNICODE_LEAD
@@ -171,11 +176,11 @@
 #endif
 #if !defined OS_UNICODE_TRAIL
     #if HOST_OS == 2
-        #define OS_UNICODE_TRAIL &macro_release &kp LALT  // macOS/Windows-Alt-Codes
+        #define OS_UNICODE_TRAIL WINMAC_UNICODE_TRAIL  // macOS/Windows-Alt-Codes
     #elif HOST_OS == 1
-        #define OS_UNICODE_TRAIL &macro_tap &kp SPACE     // Linux
+        #define OS_UNICODE_TRAIL LINUX_UNICODE_TRAIL     // Linux
     #else
-        #define OS_UNICODE_TRAIL &macro_tap &kp RET       // Windows + WinCompose (default)
+        #define OS_UNICODE_TRAIL WINCOMP_UNICODE_TRAIL       // Windows + WinCompose (default)
     #endif
 #endif
 
@@ -192,7 +197,7 @@
         }; \
     };
 
-#define UC_MACRO_ALL(name, unicode_bindings) \
+#define UC_MACRO_AOS(name, unicode_bindings) \
     / { \
         macros { \
             wm_##name: name { \
@@ -200,14 +205,14 @@
                 wait-ms = <0>; \
                 tap-ms = <0>; \
                 #binding-cells = <0>; \
-                bindings = <WINMAC_UNICODE_LEAD>, <&macro_tap unicode_bindings>, <OS_UNICODE_TRAIL>; \
+                bindings = <WINMAC_UNICODE_LEAD>, <&macro_tap unicode_bindings>, <WINMAC_UNICODE_TRAIL>; \
             }; \
            lin_##name: name { \
                 compatible = "zmk,behavior-macro"; \
                 wait-ms = <0>; \
                 tap-ms = <0>; \
                 #binding-cells = <0>; \
-                bindings = <LINUX_UNICODE_LEAD>, <&macro_tap unicode_bindings>, <OS_UNICODE_TRAIL>; \
+                bindings = <LINUX_UNICODE_LEAD>, <&macro_tap unicode_bindings>, <LINUX_UNICODE_TRAIL>; \
             }; \
         }; \
     };
@@ -229,10 +234,26 @@
     UC_MACRO(name ## _lower, &kp L0 &kp L1 &kp L2 &kp L3) \
     UC_MODMORPH(name, &name ## _lower, &none)
 
+#define ZMK_UNICODE_SINGLE_AOS(name, L0, L1, L2, L3) \
+    UC_MACRO_AOS(name ## _lower, &kp L0 &kp L1 &kp L2 &kp L3) \
+    UC_MODMORPH(wm_ ## name, wm_ ## &name ## _lower, &none) \
+    UC_MODMORPH(lin_ ## name, lin_ ## &name ## _lower, &none)
+
+
 #define ZMK_UNICODE_PAIR(name, L0, L1, L2, L3, U0, U1, U2, U3) \
     UC_MACRO(name ## _lower, &kp L0 &kp L1 &kp L2 &kp L3) \
     UC_MACRO(name ## _upper, &kp U0 &kp U1 &kp U2 &kp U3) \
     UC_MODMORPH(name, &name ## _lower, &name ## _upper)
+
+
+#define ZMK_UNICODE_PAIR_AOS(name, L0, L1, L2, L3, U0, U1, U2, U3) \
+    UC_MACRO_AOS(name ## _lower, &kp L0 &kp L1 &kp L2 &kp L3) \
+    UC_MACRO_AOS(name ## _upper, &kp U0 &kp U1 &kp U2 &kp U3) \
+    UC_MODMORPH(wn_ ## name, wm_ ## &name ## _lower, wm_ ## &name ## _upper)   \
+    UC_MODMORPH(wn_ ## name, wn_ ## &name ## _lower, wn_ ## &name ## _upper)   \
+    UC_MODMORPH(lin_ ## name, lin_ ## &name ## _lower, lin_ ## &name ## _upper)   \
+    UC_MODMORPH(lin_ ## name, lin_ ## &name ## _lower, lin_ ## &name ## _upper)   \
+
 
 /* ZMK_APPLY_MATRIX_TRANSFORM */
 
