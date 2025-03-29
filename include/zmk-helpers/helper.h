@@ -206,7 +206,7 @@
                 tap-ms = <0>; \
                 #binding-cells = <0>; \
                 bindings = <WINMAC_UNICODE_LEAD>, <&macro_tap unicode_bindings>, <WINMAC_UNICODE_TRAIL>; \
-            };
+            }; \
            lin_##name: lin_##name { \
                 compatible = "zmk,behavior-macro"; \
                 wait-ms = <0>; \
