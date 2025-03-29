@@ -200,14 +200,14 @@
 #define UC_MACRO_AOS(name, unicode_bindings) \
     / { \
         macros { \
-            wm_##name: name { \
+            wm_##name: wm_##name { \
                 compatible = "zmk,behavior-macro"; \
                 wait-ms = <0>; \
                 tap-ms = <0>; \
                 #binding-cells = <0>; \
                 bindings = <WINMAC_UNICODE_LEAD>, <&macro_tap unicode_bindings>, <WINMAC_UNICODE_TRAIL>; \
             }; \
-           lin_##name: name { \
+           lin_##name: lin_##name { \
                 compatible = "zmk,behavior-macro"; \
                 wait-ms = <0>; \
                 tap-ms = <0>; \
